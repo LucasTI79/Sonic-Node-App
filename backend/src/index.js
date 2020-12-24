@@ -36,14 +36,14 @@ app.get('/', async(req,res)=>{
     res.json({message: true})
 })
 
-app.post('/pages', async(req,res)=>{
-    const { title, content } = req.body;
+app.post('/items', async(req,res)=>{
+    const { nameItem, descriptionItem, valueItem , storeName, categoryName } =  req.body;
     const id = uuid();
 
                                 //  tabela , categorização, o que eu quero salvar , o que quero buscar 
-    await SonicChannelIngest.push( 'pages' ,   'default'  , ` page:${id}   `  , `${title} ${content}` , {
-        lang: 'por',
-    })
+   await SonicChannelIngest.push( 'items' ,   'default'  , ` item:${id}`  , `${nameItem}` , {
+          lang: 'por',
+   })
 
     res.status(201).send()
 })
@@ -52,7 +52,7 @@ app.get('/search', async(req,res)=>{
     const { q } = req.query;
 
     const results = await SonicChannelSearch.query(
-        'pages', //tabela
+        'items', //tabela
         'default', //categorização
         q, //parametro
         { lang: 'por' } //lang
@@ -66,7 +66,7 @@ app.get('/sugest', async(req,res)=>{
     const { q } = req.query;
 
     const results = await SonicChannelSearch.suggest(
-        'pages', //tabela
+        'items', //tabela
         'default', //categorização
         q, //parametro
         { limit: 5 } // limite de dados buscados
